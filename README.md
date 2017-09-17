@@ -32,3 +32,11 @@ $ sudo ./redis-restore.sh -a <path to archive> -o <old IP> -n <new IP>
 - будет создан каталог `/var/opt/redis` (mode: 0700)
 - конечное имя архива `redis-cluster-2017-09-17-14-27-32.tar.gz`
 - перед выполнением архивации выполняется команда `redis-cli -p <port> save`
+
+## redis-bkrotate
+
+Для ротации файлов с бэкапами. Есть два ключа: `-d` - где лежат бэкапы, по-умолчанию: `/var/opt/redis`) и `-o` - на сколько старые файлы удалять (ищет по маске `redis-cluster*`), по-умолчанию: `+7`.
+
+## License
+
+MIT

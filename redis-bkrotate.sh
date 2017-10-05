@@ -24,4 +24,4 @@ do
 done
 
 cd $BACKUP_DIR
-find ./ -type f -name redis-cluster* -delete
+find ./ -type f -mtime +$OLD_BACKUPS -name redis-cluster* -delete

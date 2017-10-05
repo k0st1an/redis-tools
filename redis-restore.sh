@@ -2,7 +2,7 @@
 
 INIT_DIR=/etc/init.d
 CLUSTER_DIR="/var/lib/redis"
-TMP_DIR="`mktemp`"
+COPY_CONF="no"
 REDIS_ARCH=
 OLD_IP=
 NEW_IP=
@@ -11,16 +11,18 @@ function usage() {
   printf "Usage: `basename $0`\n"
   printf "\n"
   printf "  -a  path to archive witch backup are RDB files\n"
+  printf "  -c  restore config\n"
   printf "  -o  old IP of cluster\n"
   printf "  -n  new IP of cluster\n"
   printf "  -h  print this message\n"
   printf "\n"
 }
 
-while getopts a:o:n:sh option
+while getopts a:co:n:sh option
 do
   case "$option" in
     a) REDIS_ARCH=$OPTARG;;
+    c) COPY_CONF="yes"
     o) OLD_IP=$OPTARG;;
     n) NEW_IP=$OPTARG;;
     h) usage; exit 1;;
@@ -29,8 +31,7 @@ done
 
 [[ ! $REDIS_ARCH ]] && usage && exit 1
 
-# I known `mktemp -d` make a directory...
-mkdir -p $TMP_DIR
+TMP_DIR="`mktemp -d`"
 tar zxf $REDIS_ARCH -C $TMP_DIR
 
 for item in `ls $INIT_DIR/redis*`
@@ -41,9 +42,13 @@ do
 
   mv $TMP_DIR/redis/$REDISPORT/dump.rdb /var/lib/redis/$REDISPORT/
 
-  [[ $OLD_IP ]] && [[ $NEW_IP ]] && (
+  if [[ $OLD_IP ]] && [[ $NEW_IP ]]; then
     cat $TMP_DIR/redis/$REDISPORT/cluster.conf | sed s/$OLD_IP/$NEW_IP/ > /var/lib/redis/$REDISPORT/cluster.conf
-  )
+  else
+    if [[ "$COPY_CONF" = "yes" ]]; then
+      cp $TMP_DIR/redis/$REDISPORT/cluster.conf /var/lib/redis/$REDISPORT/cluster.conf
+    fi
+  fi
 done
 
 rm -fr $TMP_DIR

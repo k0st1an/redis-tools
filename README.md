@@ -1,6 +1,6 @@
 # Redis Tools
 
-Набор скриптов для управления кластером Redis из личного опыта.
+> Для работы требуется `redis-cli`
 
 ## redis-init
 
@@ -17,7 +17,7 @@
 
 В этом случае команду нужно запустить так:
 
-```
+```shell
 $ sudo ./redis-restore.sh -a <path to archive> -o <old IP> -n <new IP>
 ```
 
@@ -36,6 +36,15 @@ $ sudo ./redis-restore.sh -a <path to archive> -o <old IP> -n <new IP>
 ## redis-bkrotate
 
 Для ротации файлов с бэкапами. Есть два ключа: `-d` - где лежат бэкапы, по-умолчанию: `/var/opt/redis`) и `-o` - на сколько старые файлы удалять (ищет по маске `redis-cluster*`), по-умолчанию: `+7`.
+
+## redis-mem
+
+Показывает сколько памяти использует кластер редиса (пока только на одном хосте).
+
+```shell
+$ ./redis-mem.sh -u gb
+168
+```
 
 ## License
 

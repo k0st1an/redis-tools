@@ -16,7 +16,7 @@ usage() {
   echo
 }
 
-while getopts p:n:u:h option
+while getopts p:H:n:u:h option
 do
   case "$option" in
     p ) REDIS_STR_PORT=$OPTARG;;

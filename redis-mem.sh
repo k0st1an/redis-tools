@@ -4,7 +4,6 @@ REDIS_HOST="localhost"
 REDIS_STR_PORT=7000
 REDIS_NODES=32
 UNIT="mb"
-MEMORY_INFO=
 
 usage() {
   echo "Usage: `basename $0` [-pnuh]"

@@ -23,7 +23,7 @@ usage() {
   echo
 }
 
-while getopts d:p:n:ONrh option
+while getopts d:p:n:O:N:rh option
 do
   case "$option" in
     d ) REDIS_CLS_DIR=$OPTARG;;
@@ -53,5 +53,6 @@ for (( i = 0; i < $REDIS_NODES; i++ )); do
   fi
 
   echo "  update IP in config $REDIS_CLS_DIR/$port_node/cluster.conf"
-  cat $REDIS_CLS_DIR/$port_node/cluster.conf | sed s/$OLD_IP/$NEW_IP/ > $REDIS_CLS_DIR/$port_node/cluster.conf
+  cat $REDIS_CLS_DIR/$port_node/cluster.conf | sed s/$OLD_IP/$NEW_IP/ > $REDIS_CLS_DIR/$port_node/cluster.conf.new
+  mv $REDIS_CLS_DIR/$port_node/cluster.conf.new $REDIS_CLS_DIR/$port_node/cluster.conf
 done
